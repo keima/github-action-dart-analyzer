@@ -6,6 +6,7 @@ export interface AnalyzerOptions {
   fatalWarnings: boolean;
   annotate: boolean;
   annotateOnly: boolean;
+  analyzePath: string;
   workingDirectory: string;
 }
 
@@ -52,10 +53,10 @@ export interface AnalyzerResult {
   errors: AnalyzerProblem[];
 }
 
-export async function analyze(cwd?: string): Promise<AnalyzerResult> {
+export async function analyze(path: string, cwd?: string): Promise<AnalyzerResult> {
   const execOutput = await exec.getExecOutput(
     'dart',
-    ['analyze', '--format=json', '.'],
+    ['analyze', '--format=json', path],
     {
       cwd,
       silent: true,
