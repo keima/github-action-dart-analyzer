@@ -53,7 +53,10 @@ export interface AnalyzerResult {
   errors: AnalyzerProblem[];
 }
 
-export async function analyze(path: string, cwd?: string): Promise<AnalyzerResult> {
+export async function analyze(
+  path: string,
+  cwd?: string,
+): Promise<AnalyzerResult> {
   const execOutput = await exec.getExecOutput(
     'dart',
     ['analyze', '--format=json', path],
