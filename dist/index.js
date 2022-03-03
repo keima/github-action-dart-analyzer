@@ -46,9 +46,9 @@ var AnalyzerProblemSeverity;
     AnalyzerProblemSeverity["WARNING"] = "WARNING";
     AnalyzerProblemSeverity["ERROR"] = "ERROR";
 })(AnalyzerProblemSeverity = exports.AnalyzerProblemSeverity || (exports.AnalyzerProblemSeverity = {}));
-function analyze(cwd) {
+function analyze(path, cwd) {
     return __awaiter(this, void 0, void 0, function* () {
-        const execOutput = yield exec.getExecOutput('dart', ['analyze', '--format=json', '.'], {
+        const execOutput = yield exec.getExecOutput('dart', ['analyze', '--format=json', path], {
             cwd,
             silent: true,
             ignoreReturnCode: true,
@@ -173,10 +173,11 @@ function run() {
                 fatalWarnings: core.getBooleanInput('fatal-warnings'),
                 annotate: core.getBooleanInput('annotate'),
                 annotateOnly: core.getBooleanInput('annotate-only'),
+                analyzePath: path.resolve(core.getInput('analyze-path')),
                 workingDirectory: path.resolve(process.env['GITHUB_WORKSPACE'] || process.cwd(), core.getInput('working-directory')),
             };
             core.debug(`Running Dart analyzer with options: ${JSON.stringify(options)}`);
-            const result = yield (0, dart_1.analyze)(options.workingDirectory);
+            const result = yield (0, dart_1.analyze)(options.analyzePath, options.workingDirectory);
             // Report info problems.
             core.startGroup('Dart Analyzer - Infos');
             if (result.infos.length) {
